@@ -377,44 +377,44 @@ void encoder::enterHandler(void)
 
 void encoder::i2cSetMin(int val) {
 	Wire.beginTransmission(i2cAddress);
-	Wire.send(0x40);
-	Wire.send(val>>8);
-	Wire.send(val&255);
+	Wire.write(0x40);
+	Wire.write(val>>8);
+	Wire.write(val&255);
 	Wire.endTransmission();
 }
 
 void encoder::i2cSetMax(int val) {
 	Wire.beginTransmission(i2cAddress);
-	Wire.send(0x41);
-	Wire.send(val>>8);
-	Wire.send(val&255);
+	Wire.write(0x41);
+	Wire.write(val>>8);
+	Wire.write(val&255);
 	Wire.endTransmission();
 }
 
 void encoder::i2cSetWrap(bool val) {
 	Wire.beginTransmission(i2cAddress);
-	Wire.send(0x42);
-	Wire.send(val);
+	Wire.write(0x42);
+	Wire.write(val);
 	Wire.endTransmission();
 }
 
 void encoder::i2cSetCount(int val) {
 	Wire.beginTransmission(i2cAddress);
-	Wire.send(0x43);
-	Wire.send(val>>8);
-	Wire.send(val&255);
+	Wire.write(0x43);
+	Wire.write(val>>8);
+	Wire.write(val&255);
 	Wire.endTransmission();
 }
 
 void encoder::i2cClearCount(void) {
 	Wire.beginTransmission(i2cAddress);
-	Wire.send(0x44);
+	Wire.write(0x44);
 	Wire.endTransmission();
 }
 
 void encoder::i2cClearEnterState(void) {
 	Wire.beginTransmission(i2cAddress);
-	Wire.send(0x45);
+	Wire.write(0x45);
 	Wire.endTransmission();
 }
 
@@ -422,12 +422,12 @@ int  encoder::i2cGetCount(void) {
 	int retValue;
 	uint8_t * p = (uint8_t *) &retValue;
 	Wire.beginTransmission(i2cAddress);
-	Wire.send(0x46);
+	Wire.write(0x46);
 	Wire.endTransmission();
 	Wire.requestFrom(i2cAddress, (uint8_t) 2);
 	while (Wire.available())
 	{
-		*(p++) = Wire.receive();
+		*(p++) = Wire.read();
 	}
 	return retValue;
 }
@@ -435,13 +435,13 @@ int  encoder::i2cGetCount(void) {
 int  encoder::i2cChange(void) {
 	int retValue;
 	Wire.beginTransmission(i2cAddress);
-	Wire.send(0x47);
+	Wire.write(0x47);
 	Wire.endTransmission();
 	Wire.requestFrom(i2cAddress, (uint8_t) 2);
 	if (Wire.available() > 1)
 	{
-		retValue = Wire.receive();
-		retValue |= (((int)(Wire.receive())) << 8);
+		retValue = Wire.read();
+		retValue |= (((int)(Wire.read())) << 8);
 	}
 	else return -1; //Call failed so return 'No Change'
 	return retValue;
@@ -450,47 +450,47 @@ int  encoder::i2cChange(void) {
 int  encoder::i2cGetDelta(void) {
 	int retValue;
 	Wire.beginTransmission(i2cAddress);
-	Wire.send(0x48);
+	Wire.write(0x48);
 	Wire.endTransmission();
 	Wire.requestFrom(i2cAddress, (uint8_t) 2);
 	if (Wire.available() > 1)
 	{
-		retValue = Wire.receive();
-		retValue |= (((int)(Wire.receive())) << 8);
+		retValue = Wire.read();
+		retValue |= (((int)(Wire.read())) << 8);
 	}
 	return retValue;
 }
 
 byte encoder::i2cGetEnterState(void) {
 	Wire.beginTransmission(i2cAddress);
-	Wire.send(0x49);
+	Wire.write(0x49);
 	Wire.endTransmission();
 	Wire.requestFrom(i2cAddress, (uint8_t) 1);
 	while(Wire.available())
 	{
-		return Wire.receive();
+		return Wire.read();
 	}
 }
 
 bool encoder::i2cOk(void) {
 	Wire.beginTransmission(i2cAddress);
-	Wire.send(0x4A);
+	Wire.write(0x4A);
 	Wire.endTransmission();
 	Wire.requestFrom(i2cAddress, (uint8_t) 1);
 	while(Wire.available())
 	{
-		return Wire.receive();
+		return Wire.read();
 	}
 }
 
 bool encoder::i2cCancel(void) {
 	Wire.beginTransmission(i2cAddress);
-	Wire.send(0x4B);
+	Wire.write(0x4B);
 	Wire.endTransmission();
 	Wire.requestFrom(i2cAddress, (uint8_t) 1);
 	while(Wire.available())
 	{
-		return Wire.receive();
+		return Wire.read();
 	}
 }
 

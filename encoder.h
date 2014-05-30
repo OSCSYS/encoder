@@ -18,7 +18,7 @@
 	#define ENTER_SHORT_PUSH	50
 	#define ENTER_LONG_PUSH	1000
 
-	#include <WProgram.h>
+	#include <Arduino.h>
 	#include <pin.h>
 
 	//ISR wrappers
